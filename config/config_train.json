@@ -1,0 +1,47 @@
+{
+	"SEED": 1234,
+	"TARGET_WIDTH" : 110,
+	"TARGET_HEIGHT" : 110,
+	"TARGET_DEPTH" : 110,
+
+	"BATCH_SIZE": 32,
+	"BUFFER_SIZE": 32,
+	"NUM_WORKERS": 16,
+	"SHUFFLE_DATALOADER": true, 
+
+	"OPTIMIZER": "adam",
+	"LEARNING_RATE_START": 1e-5,
+	"LEARNING_RATE_SCHEDULE_FACTOR": 0.1,
+	"LEARNING_RATE_SCHEDULE_PATIENCE": 5,
+
+	"LOG_DIR": "runs",
+	"MODEL_DIR": "models",
+
+	"DEBUG_DATASET": false,
+	"MONITOR": "val_acc",
+	"PATIENCE": 50,
+	
+	"CUDA": 1,	
+	"TRIAL": 0,
+	"EPOCHS" : 10,
+	"START_RECORD_EPOCH": 0,
+	"ARCHITECTURE": "resnet18",
+	"DROPOUT_RATE": 0.2,
+	"WEIGHT_DECAY": 0.001,
+
+	"NUM_CLASSES" : 4,
+	"USE_TRAINED_MODEL" : false,
+	"PATH_PRETRAINED_MODEL": null,
+	"X_TRAIN_PATH": "tensor/x_train_tensor.pt",
+	"X_TEST_PATH": "tensor/x_test_tensor.pt",
+	"Y_TRAIN_PATH": "tensor/y_train_tensor.pt",
+	"Y_TEST_PATH": "tensor/y_test_tensor.pt",
+
+	"USE_AUGMENTATION": true,
+	"ROTATE": [-5,5],
+	"TRANSLATE": [0,0.1],
+	"SCALE": [0.8,1.2],
+	
+	"CLASS_IMBALANCE": "weighted_loss",
+	"OUTPUT_FILE": "output1.txt"
+}

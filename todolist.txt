@@ -1,0 +1,126 @@
+1. Read paper
+    Convolutional Autoencoders
+2. Refactor code structures
+    almost done 
+        class imbalance?
+            -> oversampling
+                https://github.com/ufoym/imbalanced-dataset-sampler
+                train or val - random sampler?
+
+                ImbalancedDatasetSampler(train_dataset)
+                weighted sample testset ?
+            -> weighted loss: ok
+
+        restructure config file
+
+        F.one_hot ?
+        F.ravel ?
+
+        test.py -> ok        
+        predict.py  -> ok
+        
+        output_file tmux
+        utils.py 
+            classification report - test.py -> ok
+            confusion matrix - test.py -> ok
+            gradcam - predict.py
+        
+
+        augmentation -> train model
+                            spatial
+                            intensity 
+
+
+        test on 2 classes: AD vs NC, NC vs EMCI
+        metrics -> need add sensitivity/ specitivity
+        add efficientnet -> done
+        TRIAL
+        DEBUG_DATASET
+        regularization ->>>
+        softmax or logsoftmax or logit in model.py
+        early stopping, monitoring ->>
+
+        
+
+5. Predict 2 class
+
+3. Train on full dataset
+    -> train in parallel
+
+
+6. GradCAM          => tommorrow
+    model -> get layer 
+    predict -> get image
+    inspect attention map -> super impose
+
+
+4. 5 fold cross validation
+
+7. Augmentation
+https://discuss.pytorch.org/t/data-augmentor-for-3d-images/30986/4
+    -> Augmentation 3D image 
+    TorchIO
+    https://torchio.readthedocs.io/transforms/transforms.html
+    https://pythonawesome.com/tools-for-augmenting-and-writing-3d-medical-images-on-pytorch/
+
+    MONAI
+    https://github.com/Project-MONAI/tutorials/blob/master/3d_classification/densenet_training_array.ipynb
+    https://github.com/Project-MONAI/MONAI
+    Volumentation
+
+
+    torchIO: Augmentation
+    MONAI:  Augmentation, Network
+    pytorch Lighting: Code structures
+
+    Check sklearn metrics: https://scikit-learn.org/stable/modules/model_evaluation.html#classification-metrics
+
+
+	"USE_TRAINED_MODEL" : true,
+	"PATH_PRETRAINED_MODEL": "models/trial_3.pth",
+
+Record
+Trial 53:
+    Training set: Average loss: 0.484853, Average accuracy: 73.830%, AUC score: 0.812
+
+    Validation set: Average loss: 0.530972, Average accuracy: 75.214%, AUC score: 0.795
+
+    Improve accuracy from 0.7436 to 0.7521
+    Save model to models/trial_53.pth
+    Epoch: 88  
+
+Trial 44:
+    Training set: Average loss: 0.695936, Average accuracy: 53.586%, AUC score: 0.545
+
+    Validation set: Average loss: 0.734874, Average accuracy: 44.444%, AUC score: 0.700
+
+    Improve accuracy from 0.4444 to 0.4444
+    Save model to models/trial_44.pth
+################################################
+
+
+
+12/10/2021
+
+1. Restructure class imbalance -> ok
+2. Learning rate scheduler 
+    how to see learning rate scheduler for each EPOCHS?
+3. Upload code to github
+4, Hyper parameter tuner
+5. Parallel training
+6. other 3D networks: 3D Densenet, 3D VGG16, 3D Inception
+7. Bigger image size
+8. Convolutional Auto encoder
+
+
+
+
+
+
+
+
+
+
+
+
+

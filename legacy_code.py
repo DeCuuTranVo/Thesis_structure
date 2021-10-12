@@ -1,0 +1,9 @@
+base_path = '/mnt/data_lab513/vqtran_data'
+root_data = os.path.join(base_path, "data", "raw_data", "ADNI_NIfTI")
+root_bias_correction = os.path.join(base_path, "data", "clean_data", "mri_bias_correction")
+root_bet = os.path.join(base_path, "data", "clean_data", "mri_brain_extraction")
+root_reg = os.path.join(base_path, "data", "clean_data", "mri_registration")
+root_meta = os.path.join(base_path, "data", "meta_data")#, "Pre-Thesis_metadata", "ADNI") 
+root_train = os.path.join(base_path, "data", "train_data")
+root_numpy_array = os.path.join(base_path, "data", 'data_numpy_array')
+root_model = os.path.join(base_path, 'Model')
