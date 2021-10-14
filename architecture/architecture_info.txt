@@ -1,0 +1,85 @@
+* with 1x110x110x110 as input size
+
+#########################################################
+EfficientNet B0 - EfficientNet 3D
+================================================================
+Total params: 4,693,504
+Trainable params: 4,693,504
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 5.08
+Forward/backward pass size (MB): 329.14
+Params size (MB): 17.90
+Estimated Total Size (MB): 352.12
+
+###############################################################
+ResNet18 - C.Hoang
+================================================================
+Total params: 33,162,052
+Trainable params: 33,162,052
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 5.08
+Forward/backward pass size (MB): 462.10
+Params size (MB): 126.50
+Estimated Total Size (MB): 593.68
+
+##################################################################
+EfficientNet B0 - Batchnorm (monai)
+================================================================
+Total params: 4,693,504
+Trainable params: 4,693,504
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 5.08
+Forward/backward pass size (MB): 1425.36
+Params size (MB): 17.90
+Estimated Total Size (MB): 1448.34
+
+######################################################################
+Densenet121 (monai)
+================================================================
+Total params: 11,246,724
+Trainable params: 11,246,724
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 5.08
+Forward/backward pass size (MB): 1779.59
+Params size (MB): 42.90
+Estimated Total Size (MB): 1827.57
+
+#######################################################################
+SENet154 (monai)
+================================================================
+Total params: 170,215,028
+Trainable params: 170,215,028
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 5.08
+Forward/backward pass size (MB): 4337.78
+Params size (MB): 649.32
+Estimated Total Size (MB): 4992.18
+----------------------------------------------------------------
+########################################################################
+SEResNet50 (monai)
+================================================================
+Total params: 48,694,260
+Trainable params: 48,694,260
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 5.08
+Forward/backward pass size (MB): 1636.17
+Params size (MB): 185.75
+Estimated Total Size (MB): 1827.00
+
+##########################################################################
+SEResNext50 (monai)
+================================================================
+Total params: 28,360,948
+Trainable params: 28,360,948
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 5.08
+Forward/backward pass size (MB): 2036.03
+Params size (MB): 108.19
+Estimated Total Size (MB): 2149.30

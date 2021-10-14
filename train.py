@@ -64,8 +64,14 @@ def train():
             lr_scheduler.step(test_acc)
         elif trainer.MONITOR == "val_auc":
             lr_scheduler.step(test_auc)
+        elif trainer.MONITOR == "train_loss":
+            lr_scheduler.step(train_loss)
+        elif trainer.MONITOR == "train_acc":
+            lr_scheduler.step(train_acc)
+        elif trainer.MONITOR == "train_auc":
+            lr_scheduler.step(train_auc)
         else:
-            raise ValueError("Wrong monitor arguments, only 3 options: 'val_loss', 'val_acc', 'val_auc'")
+            raise ValueError("Wrong monitor arguments, only 3 options:'val_loss', 'val_acc', 'val_auc'")
             # Save model
             
         if not os.path.exists(trainer.MODEL_DIR):

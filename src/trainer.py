@@ -413,6 +413,7 @@ class BaselineClassifier(Trainer):
         else:
             raise ValueError("wrong optimizer. only 2 options: \"adam\" or \"sgd\"")
         
+        
         # Learning rate reduced gradually during training
         lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(
                                 optimizer, 
