@@ -106,7 +106,7 @@ Trial 44:
 2. Learning rate scheduler 
     how to see learning rate scheduler for each EPOCHS?
 3. Upload code to github -> ok
-4. Augmentation
+4. Augmentation -> ok
     Spacial
         monai
             Random Crop?
@@ -118,30 +118,63 @@ Trial 44:
         monai
             HistogramNormalize
             RandScaleIntensity
+            RandStdShiftIntensity
             RandAdjustConstrast
 
 4. other 3D networks: 3D Densenet (monai), ResNext50 (monai), SENet154 (monai), MobileNet(Efficient-3DCNNs), ShuffleNet(Efficient-3DCNNs), SqueezeNet(Efficient-3DCNNs)
-    Mobilenet v2, Shufflenet v2, Densenet121, SENet (monai), SqueezeNet, SE-ResNet50, 
+    Mobilenet v2, Shufflenet v2, Densenet121, SENet154 (monai), SE-ResNet50, 
     https://glassboxmedicine.com/2021/02/06/designing-custom-2d-and-3d-cnns-in-pytorch-tutorial-with-code/
+
+    ShuffleNet: Input Dimension missmatch problem
+    SqueezeNet: Output dimension mismatch problem
+
+    Transformers
+
 5, Hyper parameter tuner
 
-6. Parallel training
 7. Bigger image size
+
+11. Cyclincal learning rate
+
+12. Bayesian optimization on hyperparameter tuning
+
+10. 5-fold hold out cross validation
+
+6. Parallel training
+
 8. Convolutional Auto encoder
     Clone other repo: ALhosseni, Liu2019
 
 9. accuracy for 3 classes
 
+13. Brain 3D visualization
+    https://www.kaggle.com/polomarco/visualizatio-3d-nifti-dicom-matlab-nrrd-files
 
 Batchgenerators intensity augmentation 3D
 https://github.com/MIC-DKFZ/batchgenerators
 
-Trial 37: Efficient learning rate scheduler
+Note:
+    Architecture
+        https://theaisummer.com/cnn-architectures/
+        https://www.kaggle.com/getting-started/149448
+        https://paperswithcode.com/sota/image-classification-on-imagenet
+
+Trial 71: ResNet50
+Training set: Average loss: 1.019430, Average accuracy: 54.353%, AUC score: 0.803
+
+Validation set: Average loss: 1.120408, Average accuracy: 56.219%, AUC score: 0.791
+
+Improve accuracy from 0.5622 to 0.5622
+Save model to models/trial_71.pth
 
 
+Trial 72: SEResNet50
+Training set: Average loss: 1.026767, Average accuracy: 55.473%, AUC score: 0.805
 
-Trial 38: ResNet learning rate scheduler
+Validation set: Average loss: 1.088242, Average accuracy: 56.716%, AUC score: 0.797
 
+Improve accuracy from 0.5672 to 0.5672
+Save model to models/trial_72.pth
 
 
 

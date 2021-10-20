@@ -104,9 +104,9 @@ class InvertedResidual(nn.Module):
 
 
 class ShuffleNetV2(nn.Module):
-    def __init__(self, num_classes=600, sample_size=112, width_mult=1.):
+    def __init__(self, num_classes=600, sample_size=112, width_mult=1., dropout_rate=0.2):
         super(ShuffleNetV2, self).__init__()
-        assert sample_size % 16 == 0
+        # assert sample_size % 16 == 0
         
         self.stage_repeats = [4, 8, 4]
         # index 0 is invalid and should never be called.
@@ -128,7 +128,7 @@ class ShuffleNetV2(nn.Module):
 
         # building first layer
         input_channel = self.stage_out_channels[1]
-        self.conv1 = conv_bn(3, input_channel, stride=(1,2,2))
+        self.conv1 = conv_bn(1, input_channel, stride=(1,2,2))
         self.maxpool = nn.MaxPool3d(kernel_size=3, stride=2, padding=1)
         
         self.features = []
@@ -149,7 +149,7 @@ class ShuffleNetV2(nn.Module):
     
 	    # building classifier
         self.classifier = nn.Sequential(
-                            nn.Dropout(0.2),
+                            nn.Dropout(dropout_rate),
                             nn.Linear(self.stage_out_channels[-1], num_classes)
                             )
 
@@ -195,11 +195,11 @@ def get_model(**kwargs):
    
 
 if __name__ == "__main__":
-    model = get_model(num_classes=600, sample_size=112, width_mult=1.)
+    model = get_model(num_classes=4, sample_size=110, width_mult=1.)
     model = model.cuda()
     model = nn.DataParallel(model, device_ids=None)
     print(model)
 
-    input_var = Variable(torch.randn(8, 3, 16, 112, 112))
+    input_var = Variable(torch.randn(8, 1, 110, 110, 110))
     output = model(input_var)
     print(output.shape)

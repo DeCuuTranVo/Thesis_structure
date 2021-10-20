@@ -68,7 +68,7 @@ class InvertedResidual(nn.Module):
 
 
 class MobileNetV2(nn.Module):
-    def __init__(self, num_classes=1000, sample_size=224, width_mult=1.):
+    def __init__(self, num_classes=1000, sample_size=224, width_mult=1., dropout_rate=0.2):
         super(MobileNetV2, self).__init__()
         block = InvertedResidual
         input_channel = 32
@@ -85,10 +85,10 @@ class MobileNetV2(nn.Module):
         ]
 
         # building first layer
-        assert sample_size % 16 == 0.
+        # assert sample_size % 16 == 0.
         input_channel = int(input_channel * width_mult)
         self.last_channel = int(last_channel * width_mult) if width_mult > 1.0 else last_channel
-        self.features = [conv_bn(3, input_channel, (1,2,2))]
+        self.features = [conv_bn(1, input_channel, (1,2,2))]
         # building inverted residual blocks
         for t, c, n, s in interverted_residual_setting:
             output_channel = int(c * width_mult)
@@ -103,7 +103,7 @@ class MobileNetV2(nn.Module):
 
         # building classifier
         self.classifier = nn.Sequential(
-            nn.Dropout(0.2),
+            nn.Dropout(dropout_rate),
             nn.Linear(self.last_channel, num_classes),
         )
 
@@ -163,13 +163,13 @@ def get_model(**kwargs):
 
 
 if __name__ == "__main__":
-    model = get_model(num_classes=600, sample_size=112, width_mult=1.)
+    model = get_model(num_classes=4, sample_size=110, width_mult=1.)
     model = model.cuda()
     model = nn.DataParallel(model, device_ids=None)
     print(model)
 
 
-    input_var = Variable(torch.randn(8, 3, 16, 112, 112))
+    input_var = Variable(torch.randn(8, 1, 110, 110, 110))
     output = model(input_var)
     print(output.shape)
 

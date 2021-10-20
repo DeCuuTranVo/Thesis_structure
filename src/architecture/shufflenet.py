@@ -94,7 +94,7 @@ class ShuffleNet(nn.Module):
                    1x1 Grouped Convolutions""".format(num_groups))
         out_planes = [int(i * width_mult) for i in out_planes]
         self.in_planes = out_planes[0]
-        self.conv1   = conv_bn(3, self.in_planes, stride=(1,2,2))
+        self.conv1   = conv_bn(1, self.in_planes, stride=(1,2,2))
         self.maxpool = nn.MaxPool3d(kernel_size=3, stride=2, padding=1)
         self.layer1  = self._make_layer(out_planes[1], num_blocks[0], self.groups)
         self.layer2  = self._make_layer(out_planes[2], num_blocks[1], self.groups)
@@ -156,12 +156,12 @@ def get_model(**kwargs):
 
 
 if __name__ == "__main__":
-    model = get_model(groups=3, num_classes=600, width_mult=1)
+    model = get_model(groups=3, num_classes=4, width_mult=1)
     model = model.cuda()
     model = nn.DataParallel(model, device_ids=None)
     print(model)
 
-    input_var = Variable(torch.randn(8, 3, 16, 112, 112))
+    input_var = Variable(torch.randn(8, 1, 112, 110, 110))
     output = model(input_var)
     print(output.shape)
 

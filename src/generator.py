@@ -7,6 +7,7 @@ import pandas as pd
 import json
 from src.utils import preprocess
 import numpy as np
+import monai
 
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
@@ -18,6 +19,7 @@ class Generator(Dataset):
             transforms.Resize(image_size),
             transforms.ConvertImageDtype(torch.float),
             transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD)]
+        
         image_transformation = transforms.Compose(image_transformation)
 
         self.img_labels = df

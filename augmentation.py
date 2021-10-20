@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import torch
 import cv2
 import torchio as tio
+import monai
 
 
 def show_slices(slices):
@@ -40,8 +41,20 @@ transforms = (
 
 transform = tio.Compose(transforms)
 
+image_transformation = (
+     # monai.transforms.HistogramNormalize(),
+     monai.transforms.NormalizeIntensity(),
+     monai.transforms.RandStdShiftIntensity(0.9, prob=0.1),
+     # monai.transforms.RandAffine(prob=0.9, rotate_range= None, shear_range=None, translate_range=None, scale_range=None), #scale_range=(0.95,1.05) #translate_range=(0,1) #rotate_range=(-0.087*6, 0.087*6)
+     monai.transforms.RandFlip(prob=0.5, spatial_axis=None),
+     monai.transforms.ToTensor(dtype=None, device=None)
+)
+
+image_transformation = monai.transforms.Compose(image_transformation)
+
 img_data_orig = torch.unsqueeze(img_data_orig, 0)
-img_data_transformed = transform(img_data_orig)
+# img_data_transformed = transform(img_data_orig)
+img_data_transformed = image_transformation(transform(img_data_orig))
 img_data_transformed = torch.squeeze(img_data_transformed)
 
 slice_4 = img_data_transformed[img_data_transformed.shape[0]//2, :, :]

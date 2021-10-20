@@ -33,7 +33,7 @@ class Block(nn.Module):
 
 
 class MobileNet(nn.Module):
-    def __init__(self, num_classes=600, sample_size=224, width_mult=1.):
+    def __init__(self, num_classes=600, sample_size=112, width_mult=1., dropout_rate=0.2):
         super(MobileNet, self).__init__()
 
         input_channel = 32
@@ -49,7 +49,7 @@ class MobileNet(nn.Module):
         [1024, 2, (1,1,1)],
         ]
 
-        self.features = [conv_bn(3, input_channel, (1,2,2))]
+        self.features = [conv_bn(1, input_channel, (1,2,2))]
         # building inverted residual blocks
         for c, n, s in cfg:
             output_channel = int(c * width_mult)
@@ -62,7 +62,7 @@ class MobileNet(nn.Module):
 
         # building classifier
         self.classifier = nn.Sequential(
-            nn.Dropout(0.2),
+            nn.Dropout(dropout_rate),
             nn.Linear(last_channel, num_classes),
         )
 
@@ -107,11 +107,12 @@ def get_model(**kwargs):
 
 
 if __name__ == '__main__':
-    model = get_model(num_classes=600, sample_size = 112, width_mult=1.)
+    model = get_model(num_classes=4, width_mult=1., dropout_rate = 0.2)
     model = model.cuda()
     model = nn.DataParallel(model, device_ids=None)
     print(model)
 
-    input_var = Variable(torch.randn(8, 3, 16, 112, 112))
+    input_var = Variable(torch.randn(8, 1, 110, 110, 110))
+    print(input_var.shape)
     output = model(input_var)
     print(output.shape)
