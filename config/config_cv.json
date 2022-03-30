@@ -1,0 +1,62 @@
+{
+	"SEED": 1234,
+	"TARGET_WIDTH" : 110,
+	"TARGET_HEIGHT" : 110,
+	"TARGET_DEPTH" : 110,
+
+	"BATCH_SIZE": 4,
+	"BUFFER_SIZE": 4,
+	"NUM_WORKERS": 16,
+	"SHUFFLE_DATALOADER": true, 
+
+	"OPTIMIZER": "adam",
+	"SCHEDULER": "reduce",
+	"LEARNING_RATE_START": 1e-4,
+
+	"LEARNING_RATE_SCHEDULE_FACTOR": 0.80,
+	"LEARNING_RATE_SCHEDULE_PATIENCE": 2,
+	
+	"MODE":"triangular2",
+	"MAX_LEARING_RATE" : 1e-3,
+	"STEP_SIZE_UP": 20,
+	"GAMMA": 0.99,
+
+	"LOG_DIR": "runs",	
+	"MODEL_DIR": "models",
+
+	"DEBUG_DATASET": false,
+	"MONITOR": "val_acc",
+	"PATIENCE": 120,
+	
+	"START_RECORD_EPOCH": 0,
+	"DROPOUT_RATE": 0.2,
+	"WEIGHT_DECAY": 0.001,
+
+	"USE_TRAINED_MODEL" : false,
+	"PATH_PRETRAINED_MODEL": null,
+	"X_CV_PATH": "/mnt/data_lab513/vqtran_data/data/data_train_dec/tensor/x_tensor_NC_EMCI_AD_cv_data_filter.pt",
+	"Y_CV_PATH": "/mnt/data_lab513/vqtran_data/data/data_train_dec/tensor/y_tensor_NC_EMCI_AD_cv_data_filter.pt",
+	"X_TRAIN_PATH": "",
+	"X_TEST_PATH": "",
+	"Y_TRAIN_PATH": "",
+	"Y_TEST_PATH": "",
+
+	"USE_AUGMENTATION": true,
+	"ROTATE": [-20,20],
+	"TRANSLATE": [0,0.2],
+	"SCALE": [0.8,1.2],
+	
+	"CLASS_IMBALANCE": "weighted_loss",
+	"OUTPUT_FILE": "output0.txt",
+
+	"CUDA": 2,	
+	"TRIAL": 180.4,
+	"EPOCHS" : 50,
+	"ARCHITECTURE": {"RESNET": "resnet34", "EFFICIENTNET": "efficientnet_b3_bn", "SHUFFLENET": "shufflenet_v2"},
+
+	"NUM_CLASSES" : 3,
+	"PROBLEM": "three_classes",
+	"NUM_FOLD": 5,
+	"CURRENT_FOLD": 4
+
+}

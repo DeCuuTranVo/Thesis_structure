@@ -27,7 +27,7 @@ from src.utils import seed_torch
 
 
 def train(): 
-    seed_torch(seed=0)
+    
     
     # Initialisation
     best_score = 0	
@@ -39,11 +39,15 @@ def train():
 
     # LOAD TRAINER
     trainer = BaselineClassifier(**params)
+    seed_torch(seed=trainer.SEED)
     # Set up DataLoader
     train_dataloader, test_dataloader = trainer.set_up_training_data(train_or_val = "train")
     # Set up training params
     model, optimizer, loss_criteria, lr_scheduler, device = trainer.set_up_training()
 
+    # print training parameters
+    with open(trainer.OUTPUT_FILE, 'a') as f: 
+        print(params, file=f)
     # print("cuda",trainer.CUDA)
 
     # Train over 10 epochs (We restrict to 10 for time issues)
@@ -55,24 +59,39 @@ def train():
         trainer.training_loss.append(train_loss)
         trainer.validation_loss.append(test_loss)
         trainer.training_accuracy.append(train_acc)
-        trainer.validation_accuracy.append(test_acc)     
-        
-        # Update learning rate (according to monitoring metrics)
-        if trainer.MONITOR == "val_loss":
-            lr_scheduler.step(test_loss)
-        elif trainer.MONITOR == "val_acc":
-            lr_scheduler.step(test_acc)
-        elif trainer.MONITOR == "val_auc":
-            lr_scheduler.step(test_auc)
-        elif trainer.MONITOR == "train_loss":
-            lr_scheduler.step(train_loss)
-        elif trainer.MONITOR == "train_acc":
-            lr_scheduler.step(train_acc)
-        elif trainer.MONITOR == "train_auc":
-            lr_scheduler.step(train_auc)
+        trainer.validation_accuracy.append(test_acc)  
+        trainer.training_area_under_curve.append(train_auc)
+        trainer.validation_area_under_curve.append(test_auc)   
+          
+        if trainer.SCHEDULER == "reduce":
+            # Update learning rate (according to monitoring metrics)
+            if trainer.MONITOR == "val_loss":
+                lr_scheduler.step(test_loss)
+            elif trainer.MONITOR == "val_acc":
+                lr_scheduler.step(test_acc)
+            elif trainer.MONITOR == "val_auc":
+                lr_scheduler.step(test_auc)
+            elif trainer.MONITOR == "train_loss":
+                lr_scheduler.step(train_loss)
+            elif trainer.MONITOR == "train_acc":
+                lr_scheduler.step(train_acc)
+            elif trainer.MONITOR == "train_auc":
+                lr_scheduler.step(train_auc)
+            else:
+                raise ValueError("Wrong monitor arguments, only 3 options:'val_loss', 'val_acc', 'val_auc'")
+                # Save model
+            current_learning_rate = optimizer.param_groups[0]['lr']  
+        elif trainer.SCHEDULER == "cyclic":
+            lr_scheduler.step()
+            current_learning_rate = optimizer.param_groups[0]['lr']
+            # current_learning_rate = lr_scheduler.get_last_lr()[0]
         else:
-            raise ValueError("Wrong monitor arguments, only 3 options:'val_loss', 'val_acc', 'val_auc'")
-            # Save model
+            raise ValueError("Wrong SCHEDULER")
+        
+        trainer.learning_rate_history.append(current_learning_rate)
+        trainer.writer.add_scalar("Learning rate history", current_learning_rate,  epoch+ trainer.START_RECORD_EPOCH)
+        with open(trainer.OUTPUT_FILE, 'a') as f: 
+            print("Learning rate of epoch: {} is {}".format(epoch,current_learning_rate), file=f)            
             
         if not os.path.exists(trainer.MODEL_DIR):
             os.makedirs(trainer.MODEL_DIR)
@@ -124,7 +143,9 @@ def train():
 
     # torch.save(model.state_dict(), trainer.saved_model_path)   
     # print('model saved at', trainer.saved_model_path)
-
+    
+    with open(trainer.OUTPUT_FILE, 'a') as f:
+        print(trainer.learning_rate_history, file=f)
     print('################################################')
     
     

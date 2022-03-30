@@ -10,8 +10,10 @@
 	"NUM_WORKERS": 16,
 	"SHUFFLE_DATALOADER": true, 
 
-	"OPTIMIZER": "sgd",
+	"OPTIMIZER": "adam",
 	"LEARNING_RATE_START": 1e-3,
+	"LEARNING_RATE_SCHEDULE_FACTOR": 0.9,
+	"LEARNING_RATE_SCHEDULE_PATIENCE": 5,
 
 	"LOG_DIR": "runs",
 	"MODEL_DIR": "models",
@@ -20,17 +22,17 @@
 	"MONITOR": "val_acc",
 	"PATIENCE": 30,
 	
-	"CUDA": -1,	
-	"TRIAL": 45,
+	"CUDA": 1,	
+	"TRIAL": 46.5,
 	"EPOCHS" : 1,
 	"START_RECORD_EPOCH": 0,
-	"ARCHITECTURE": "efficientnet_b0",
+	"ARCHITECTURE": "resnet18",
 	"DROPOUT_RATE": 0,
 	"WEIGHT_DECAY": 0.01,
 
 	"NUM_CLASSES" :2,
 	"USE_TRAINED_MODEL" : true,
-	"PATH_PRETRAINED_MODEL": "models/trial_45.5.pth",
+	"PATH_PRETRAINED_MODEL": "models/trial_46.5.pth",
 	"X_TRAIN_PATH": "tensor/x_train_NC_AD.pt",
 	"X_TEST_PATH": "tensor/x_test_NC_AD.pt",
 	"Y_TRAIN_PATH": "tensor/y_train_NC_AD.pt",
@@ -41,6 +43,6 @@
 	"TRANSLATE": [0,0.1],
 	"SCALE": [0.8,1.2],
 
-	"CLASS_IMBALANCE": "oversampling",
+	"CLASS_IMBALANCE": "weighted_loss",
 	"PROBLEM": "NC_AD"
 }

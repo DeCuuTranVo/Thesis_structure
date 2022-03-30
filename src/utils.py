@@ -137,7 +137,7 @@ def to_categorical(y, num_classes):
 # print(y_pred_1hot)
 # print(y_test_1hot)
 
-def calculate_metrics(out_gt, out_pred):
+def calculate_metrics(out_gt, out_pred, num_classes):
     """
     Calculate methics for model evaluation
 
@@ -158,13 +158,13 @@ def calculate_metrics(out_gt, out_pred):
     out_gt = out_gt.cpu().detach().numpy()
     out_pred = out_pred.cpu().detach().numpy()
     
-    out_gt = to_categorical(out_gt.astype('uint8'), num_classes=4)
+    out_gt = to_categorical(out_gt.astype('uint8'), num_classes=num_classes)
     try:
         auc_score = roc_auc_score(out_gt, out_pred, average="macro")
     except:
         auc_score = 0
     out_pred = np.argmax(out_pred, axis=1)
-    out_pred = to_categorical(out_pred.astype('uint8'), num_classes=4)
+    out_pred = to_categorical(out_pred.astype('uint8'), num_classes=num_classes)
     
     # # print("out_gt_metrics", out_gt)
     # print("shape of out_gt_metrics",out_gt.shape)
@@ -199,10 +199,14 @@ def create_confusion_matrix(out_gt, out_pred, problem):
     print(np.unique(out_pred, axis=0))
     
     cm = confusion_matrix(out_gt , out_pred)
-    print(cm)
+    # print(cm)
     print([i for i in np.unique(out_pred, axis=0)])
     
-    if problem == "four_classes":
+    if problem == "three_classes":
+        label_list = ['NC', 'EMCI','AD']
+        index_list = [0,1,2]
+        columns_list = [0,1,2]
+    elif problem == "four_classes":
         label_list = ['NC', 'EMCI', 'LMCI', 'AD']
         index_list = [0,1,2,3]
         columns_list = [0,1,2,3]
@@ -216,8 +220,9 @@ def create_confusion_matrix(out_gt, out_pred, problem):
         columns_list = [0,1]
     else:
         print("wrong problem")
+        
     cm = pd.DataFrame(cm , index = index_list , columns = columns_list)
-    # print(cm)
+    print(cm)
     # ######################################################################################
     cm_figure = plt.figure(figsize = (10,8))    
     cm_heatmap = sns.heatmap(cm, linecolor = 'black' , linewidth = 0.5 , annot = True, fmt='d', xticklabels = label_list, yticklabels =label_list  ) 
@@ -237,8 +242,15 @@ def create_classification_report(out_gt, out_pred, problem):
 
     out_pred = np.argmax(out_pred, axis=1)
     
-    
-    if problem == "four_classes":
+    if problem == "three_classes":
+        # CLASSIFICATION REPORT
+        classes = {          
+                1:('EMCI' , 'early cognitive impairment'), 
+                0: ('NC', 'normal control'),  
+                2: ('AD', 'alzheimers disease')}
+        out_gt = to_categorical(out_gt.astype('uint8'), num_classes=3)
+        out_pred = to_categorical(out_pred.astype('uint8'), num_classes=3)
+    elif problem == "four_classes":
         # CLASSIFICATION REPORT
         classes = {          
                 2 :('LMCI', 'late cognitive impairment'), 

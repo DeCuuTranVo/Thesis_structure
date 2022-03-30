@@ -8,9 +8,15 @@ import resnet_3d
 from efficientnet_pytorch_3d import EfficientNet3D
 import monai
 from torch.autograd import Variable
-from src.architecture.mobilenetv2 import MobileNetV2
-from src.architecture.mobilenet import MobileNet
-from src.architecture.shufflenetv2 import ShuffleNetV2
+
+try:
+    from src.architecture.mobilenetv2 import MobileNetV2
+    from src.architecture.mobilenet import MobileNet
+    from src.architecture.shufflenetv2 import ShuffleNetV2
+except:
+    from architecture.mobilenetv2 import MobileNetV2
+    from architecture.mobilenet import MobileNet
+    from architecture.shufflenetv2 import ShuffleNetV2
 
 
 
@@ -19,7 +25,18 @@ class NeuralNetwork(nn.Module):
     def __init__(self, model_name, num_classes=4, is_pretrained=True, dropout_rate = 0, image_size = 110):
         super().__init__()
         
-        if model_name == "resnet18":
+        if model_name == "resnet10":
+        # Load Resnet50 with pretrained ImageNet weights
+            self.base_model = resnet_3d.resnet10_3d(pretrained = is_pretrained, input_channels = 1, num_classes=num_classes)
+            # replace the last layer with a new layer that have `num_classes` nodes, followed by Sigmoid function
+            
+            classifier_input_size = self.base_model.fc.in_features
+            self.base_model.fc = nn.Sequential(
+                            nn.Dropout(p=dropout_rate),
+                            nn.Linear(classifier_input_size, num_classes, bias=True)) ### bias = True ????
+            #                 nn.LogSoftMax())
+        
+        elif model_name == "resnet18":
         # Load Resnet50 with pretrained ImageNet weights
             self.base_model = resnet_3d.resnet18_3d(pretrained = is_pretrained, input_channels = 1, num_classes=num_classes)
             # replace the last layer with a new layer that have `num_classes` nodes, followed by Sigmoid function
@@ -29,6 +46,17 @@ class NeuralNetwork(nn.Module):
                             nn.Dropout(p=dropout_rate),
                             nn.Linear(classifier_input_size, num_classes, bias=True)) ### bias = True ????
             #                 nn.LogSoftMax())
+        
+        elif model_name == "resnet34":
+            self.base_model = resnet_3d.resnet34_3d(pretrained = is_pretrained, input_channels = 1, num_classes=num_classes)
+            # replace the last layer with a new layer that have `num_classes` nodes, followed by Sigmoid function
+            
+            classifier_input_size = self.base_model.fc.in_features
+            self.base_model.fc = nn.Sequential(
+                            nn.Dropout(p=dropout_rate),
+                            nn.Linear(classifier_input_size, num_classes, bias=True)) ### bias = True ????
+            #                 nn.LogSoftMax())
+            
         elif model_name == "resnet50":
             self.base_model = resnet_3d.resnet50_3d(pretrained = is_pretrained, input_channels = 1, num_classes=num_classes)
             # replace the last layer with a new layer that have `num_classes` nodes, followed by Sigmoid function
@@ -91,6 +119,14 @@ class NeuralNetwork(nn.Module):
             self.base_model = monai.networks.nets.EfficientNetBN("efficientnet-b0", pretrained=True, progress=True, spatial_dims=3, in_channels=1, num_classes=num_classes, norm=('batch', {'eps': 0.001, 'momentum': 0.01}), adv_prop=False)
             self.base_model._dropout = nn.Dropout(p = dropout_rate)
             
+        elif model_name == "efficientnet_b3_bn":
+            self.base_model = monai.networks.nets.EfficientNetBN("efficientnet-b3", pretrained=True, progress=True, spatial_dims=3, in_channels=1, num_classes=num_classes, norm=('batch', {'eps': 0.001, 'momentum': 0.01}), adv_prop=False)
+            self.base_model._dropout = nn.Dropout(p = dropout_rate)
+            
+        elif model_name == "efficientnet_b7_bn":
+            self.base_model = monai.networks.nets.EfficientNetBN("efficientnet-b7", pretrained=True, progress=True, spatial_dims=3, in_channels=1, num_classes=num_classes, norm=('batch', {'eps': 0.001, 'momentum': 0.01}), adv_prop=False)
+            self.base_model._dropout = nn.Dropout(p = dropout_rate)
+            
         elif model_name == "densenet121":
             keyword_arguments = {'spatial_dims': 3,
                                 'in_channels': 1,
@@ -111,9 +147,7 @@ class NeuralNetwork(nn.Module):
         else:
             raise ValueError("Wrong keywords for model_name argument")
         
-        
-
-# print(my_model)    
+    # print(my_model)    
         
 
     def forward(self, images):
@@ -123,15 +157,16 @@ class NeuralNetwork(nn.Module):
     
 
 if __name__ == "__main__":
-    my_model = NeuralNetwork("efficientnet_b7", num_classes=4, is_pretrained=True)
+    my_model = NeuralNetwork("densenet121", num_classes=4, is_pretrained=True)
     # print(my_model7
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    my_model.to(device)
-    summary(my_model, input_size=(1, 110, 110, 110))
+    # my_model.to(device)
+    # summary(my_model, input_size=(1, 110, 110, 110))
+    print(my_model)
     
-    # input_var = Variable(torch.randn(8, 1, 110, 110, 110))
-    # print(input_var.shape)
+    input_var = Variable(torch.randn(8, 1, 110, 110, 110))
+    print(input_var.shape)
     # input_var.to(device)
     # print(type(input_var))
-    # output = my_model(input_var)
-    # print(output.shape)
+    output = my_model(input_var)
+    print(output.shape)

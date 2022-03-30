@@ -5,13 +5,22 @@
 	"TARGET_DEPTH" : 110,
 
 	
-	"BATCH_SIZE": 24,
-	"BUFFER_SIZE": 24,
+	"BATCH_SIZE": 12,
+	"BUFFER_SIZE": 12,
 	"NUM_WORKERS": 16,
 	"SHUFFLE_DATALOADER": true, 
 
 	"OPTIMIZER": "sgd",
+	"SCHEDULER": "reduce",
 	"LEARNING_RATE_START": 1e-3,
+
+	"LEARNING_RATE_SCHEDULE_FACTOR": 0.85,
+	"LEARNING_RATE_SCHEDULE_PATIENCE": 3,
+
+	"MODE":"triangular2",
+	"MAX_LEARING_RATE" : 1e-3,
+	"STEP_SIZE_UP": 20,
+	"GAMMA": 0.99,
 
 	"LOG_DIR": "runs",
 	"MODEL_DIR": "models",
@@ -20,22 +29,29 @@
 	"MONITOR": "val_acc",
 	"PATIENCE": 30,
 	
-	"CUDA": 0,	
+	"CUDA": 2,	
 	"TRIAL": 0.0,
 	"EPOCHS" : 60,
 	"START_RECORD_EPOCH": 0,
-	"ARCHITECTURE": "efficientnet_b0",
+	"ARCHITECTURE": {"RESNET": "resnet34", "EFFICIENTNET": "efficientnet_b3", "SHUFFLENET": "shufflenet_v2"},
 	"DROPOUT_RATE": 0,
 	"WEIGHT_DECAY": 0.01,
 
-	"NUM_CLASSES" : 4,
+	"NUM_CLASSES" : 3,
 	"USE_TRAINED_MODEL" : true,
-	"PATH_PRETRAINED_MODEL": "models/trial_24.pth",
-	"X_TRAIN_PATH": "tensor/x_train_tensor.pt",
-	"X_TEST_PATH": "tensor/x_test_tensor.pt",
-	"Y_TRAIN_PATH": "tensor/y_train_tensor.pt",
-	"Y_TEST_PATH": "tensor/y_test_tensor.pt",
+	"PATH_PRETRAINED_MODEL": "/mnt/data_lab513/vqtran_data/Model/models/trial_159.4/fold_3.pth",
+	"X_TRAIN_PATH": "/mnt/data_lab513/vqtran_data/data_torch_tensor/tensor/x_train_NC_AD.pt",
+	"X_TEST_PATH": "/mnt/data_lab513/vqtran_data/data_torch_tensor/tensor/x_test_NC_AD.pt",
+	"Y_TRAIN_PATH": "/mnt/data_lab513/vqtran_data/data_torch_tensor/tensor/y_train_NC_AD.pt",
+	"Y_TEST_PATH": "/mnt/data_lab513/vqtran_data/data_torch_tensor/tensor/y_test_NC_AD.pt",
 
+	"USE_AUGMENTATION": true,
+	"ROTATE": [-20,20],
+	"TRANSLATE": [0,0.2],
+	"SCALE": [0.8,1.2],
+
+	"CLASS_IMBALANCE": "weighted_loss",
+	"OUTPUT_FILE": "output1.txt",
     "PREDICT_IMAGE_INDEX": 12,
-	"PROBLEM": "CN_EMCI"
+	"PROBLEM": "three_classes"
 }

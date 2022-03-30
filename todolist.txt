@@ -134,13 +134,17 @@ Trial 44:
 
 7. Bigger image size
 
-11. Cyclincal learning rate
+11. Cyclincal learning rate -> ok
+    Mode: Triangular 2?
+    Mode: Exp ?
 
 12. Bayesian optimization on hyperparameter tuning
-
+    Facebook ax_platform
+        https://ax.dev/api/utils.html
+    Hyperopt
 10. 5-fold hold out cross validation
 
-6. Parallel training
+6. Parallel training -> ok
 
 8. Convolutional Auto encoder
     Clone other repo: ALhosseni, Liu2019
@@ -150,7 +154,7 @@ Trial 44:
 13. Brain 3D visualization
     https://www.kaggle.com/polomarco/visualizatio-3d-nifti-dicom-matlab-nrrd-files
 
-Batchgenerators intensity augmentation 3D
+Batchgenerators intensity augmentation 
 https://github.com/MIC-DKFZ/batchgenerators
 
 Note:
@@ -177,8 +181,152 @@ Improve accuracy from 0.5672 to 0.5672
 Save model to models/trial_72.pth
 
 
+______________________________________________________________________________________________________
+
+3 classes
+Learning rate scheduler ->ok ?
+    draw lr per epochs
+Bayesian optimization -> read paper
+5-fold cross-validation
+read more paper
+torch.optim.lr_scheduler.StepLR
+
+
+batchsize 16:
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A      3173      G   /usr/lib/xorg/Xorg                118MiB |
+|    0   N/A  N/A      3893      G   /usr/bin/gnome-shell               84MiB |
+|    0   N/A  N/A     21810      C   python                           6551MiB |
+|    1   N/A  N/A      3173      G   /usr/lib/xorg/Xorg                  0MiB |
+|    1   N/A  N/A      3893      G   /usr/bin/gnome-shell                0MiB |
+|    1   N/A  N/A     21810      C   python                           6485MiB |
++-----------------------------------------------------------------------------+
+
+batchsize 8:
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A      3173      G   /usr/lib/xorg/Xorg                118MiB |
+|    0   N/A  N/A      3893      G   /usr/bin/gnome-shell               85MiB |
+|    0   N/A  N/A      7070      C   python                           3853MiB |
+|    1   N/A  N/A      3173      G   /usr/lib/xorg/Xorg                  0MiB |
+|    1   N/A  N/A      3893      G   /usr/bin/gnome-shell                0MiB |
+|    1   N/A  N/A      7070      C   python                           3799MiB |
++-----------------------------------------------------------------------------+
+
+
+
+Cyclic Exp-range: 
+    "OPTIMIZER": "adam",
+	"SCHEDULER": "cyclic",
+	"LEARNING_RATE_START": 1e-5,
+
+	"LEARNING_RATE_SCHEDULE_FACTOR": 0.9,
+	"LEARNING_RATE_SCHEDULE_PATIENCE": 5,
+
+	"MODE":"exp_range",
+	"MAX_LEARING_RATE" : 1e-3,
+	"STEP_SIZE_UP": 20,
+	"GAMMA": 0.99,
+
+
+Experiment with:
+    Ray Tune:
+        Scheduler 
+        Search_algo
+
+        tensorboard --logdir ~/ray_results
+
+
+
+        cross validation: no augmentation? -> two different dataset -> solved
+
+                          no shuffle? -> torch SubsetRandomSampler have already shuffled indexes in each epoch. 
+
+
+        output0.txt: 
+            hyperparameter tunning 
+        output1.txt:
+            cross validation
+
+
+features: save the best results
 
 
 
 
 
+modify inner_outer fold for tensorboard writer and logdir
+
+
+
+best performance:
+    trial 139: resnet18 5 fold
+    trial 143: resnet18: 10 fold
+        
+Hyper parameter tunning: 
+    learning rate -> regularization 
+                     learning rate decay
+                     model size
+
+Ensemble learning
+https://discuss.pytorch.org/t/custom-ensemble-approach/52024/4
+
+    
+Three tasks:
+    Inspect dataset: 
+        
+        Two ID subject for 1 image: 
+            # SEARCH_METRICS = "ID_SUBJECT" # "ID_IMAGE"
+            # ID_IMAGE = "I218391"
+            # ID_SUBJECT = "037_V_4001" 
+
+            -> SOLVED
+        
+        Two image for 1 subject & 1 image id: 
+            SEARCH_METRICS = "ID_IMAGE"
+            ID_IMAGE = "I41449"
+            ID_SUBJECT = "094_S_1241"'
+
+            -> SOLVED
+    
+    Predict on all dataset (done) -> create data frame with probability and class and true/false (done) -> save as csv format (done)
+        -> choose false images -> discard
+
+    Train image: convert file to image (done) 
+    
+
+
+    Retrain model with new image data: .nii -> torch
+
+    Inspect augmentation on MONAI library (done)
+
+    Inspect max, min, value range, std, ...
+
+    Inspect weight and model structures: 
+
+    Create ensemble model
+
+on 27/12/2021
+1. Nested 5 fold cross validation
+2. CAM for visualization
+
+3. Viết chọn hình bằng máy
+
+600 ảnh
+    200 ảnh (máy): ảnh distinct 
+    400 ảnh: lọc bỏ 
+        400 ảnh dán nhãn sẳn
+            bác sĩ làm gì khi gặp ảnh khó
+                chụp lại ảnh khác hay tự bác sĩ chuẩn đoán
+                    -> ảnh + sinh thiết + MMSE
+            đưa 400 ảnh chưa được chuẩn đoán: hạn chế cần được phát triển (limitation)
+
+
+"/mnt/data_lab513/vqtran_data/data/data_train_dec/tensor/x_tensor_NC_EMCI_AD_cv_data_filter.pt" 

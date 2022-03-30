@@ -8,3 +8,6 @@ models
 output0.txt
 output1.txt
 *.png
+*.txt
+txt_output/
+*.csv
