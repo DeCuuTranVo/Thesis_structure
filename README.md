@@ -1,4 +1,4 @@
-# Thesis_structure
+# Thesis structure
 
 Alzheimer’s Disease (AD) is one of the temporarily leading causes of death for the elderly in the United States. AD patients undergo tremendous cognitive function degradation, entailing memory loss, executive function damage, language impairment, and visuospatial dysfunction, which negatively affect their life quality and life expectancy. Currently, there are no available cures for AD. Thus, early diagnosis plays an integral role in decelerating the disease’s progression and improving patients’ symptoms. Among AD diagnosis methods, magnetic resonance imaging (MRI) has advantages in non-invasiveness, fast procedure, and availability with acceptable accuracy. A computer-aided diagnosis (CAD) system empowered by deep learning algorithms has the potential for MRI-based automatic detection of AD onset and classification of AD progress. 
 
